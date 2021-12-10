@@ -64,6 +64,7 @@ export default {
   },
   methods :{
     update(){
+
       this.$store.dispatch('updateRequest', this.details)
     },
     destroy() {

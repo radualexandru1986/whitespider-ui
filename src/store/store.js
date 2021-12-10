@@ -5,7 +5,8 @@ const store =  {
     state: {
         dataPages: null,
         orderBy : 'title',
-        currentPage : 1
+        currentPage : 1,
+        defaultPath :process.env.VUE_APP_ROOT_API
 
     },
     mutations: {
@@ -40,28 +41,28 @@ const store =  {
 
            commit('changeCurrentPage', payload.index );
 
-           let url =  `http://127.0.0.1:8000/api/books?page=${state.currentPage}&by=${state.orderBy}`;
+           let url =  `${state.defaultPath}/books?page=${state.currentPage}&by=${state.orderBy}`;
 
             axios.get(url).then(response=>{
                 commit('addPages', response.data)
             })
         },
 
-        storeRequest({dispatch},payload) {
-            let storeUrl =  `http://127.0.0.1:8000/api/books`;
+        storeRequest({dispatch, state},payload) {
+            let storeUrl =  `${state.defaultPath}/books`;
             axios.post(storeUrl, payload).then(()=>{
                dispatch('prepareRequest', payload);
             });
         } ,
 
-        updateRequest({dispatch},payload) {
-            let updateUrl =  `http://127.0.0.1:8000/api/books/${payload.id}`;
+        updateRequest({dispatch, state},payload) {
+            let updateUrl =  `${state.defaultPath}/books/${payload.id}`;
             axios.post(updateUrl, payload).then(()=>{
                dispatch('prepareRequest', payload);
             });
         },
-        deleteRequest({dispatch},payload) {
-            let updateUrl =  `http://127.0.0.1:8000/api/books/${payload.id}/delete`;
+        deleteRequest({dispatch, state},payload) {
+            let updateUrl =  `${state.defaultPath}/books/${payload.id}/delete`;
             axios.post(updateUrl, payload).then(()=>{
                dispatch('prepareRequest', payload);
             });
