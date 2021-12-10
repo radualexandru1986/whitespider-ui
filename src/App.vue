@@ -1,18 +1,27 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1 class="display-1">Library</h1>
+    <hr>
+    <Library />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Library from './components/Library.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    Library
+  },
+  methods : {
+
+  },
+  beforeMount() {
+    window.axios.get('http://127.0.0.1:8000/api/books').then(response=>{
+      this.$store.commit('addPages', response.data)
+        })
+  },
 }
 </script>
 
