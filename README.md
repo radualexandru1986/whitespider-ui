@@ -1,3 +1,6 @@
+### A working example can be seen here: 
+https://alexradu.co.uk/
+
 # whitespider
 
 ## Project setup
@@ -20,5 +23,6 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+
