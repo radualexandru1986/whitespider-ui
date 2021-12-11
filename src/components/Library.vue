@@ -4,7 +4,7 @@
     <label class="btn btn-secondary" :class="by == 'title' ? 'active':''"  @click="orderBy('title')">
       Order By Title
     </label>
-    <label class="btn btn-secondary" :class="by == 'genre' ? 'active':''" @click="orderBy('genre')">
+    <label class="btn btn-secondary" :class="by == 'genre_id' ? 'active':''" @click="orderBy('genre_id')">
       Order By Genre
     </label>
     <label class="btn btn-secondary" :class="by == 'author' ? 'active':''" @click="orderBy('author')">
@@ -52,7 +52,7 @@
              </div>
 
              <div class="col text-start">
-               {{ book.genre }}
+               {{ book.genre.name }}
              </div>
 
              <div class="col text-start">
@@ -69,7 +69,7 @@
         </h2>
         <div :id="'flush-collapseOne'+index" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">
-              <Update :author="book.author" :title="book.title" :genre="book.genre" :available="book.available" :id="book.id" />
+              <Update :author="book.author" :title="book.title" :genre="book.genre" :available="book.available" :id="book.id"  :key="book.id"/>
           </div>
         </div>
       </div>
@@ -107,15 +107,25 @@ export default {
   methods: {
 
     nextPage(index){
-      this.$store.dispatch('prepareRequest', {index : index})
+      this.$store.dispatch('prepareRequest', { index : index })
     },
 
     orderBy(query) {
-      this.$store.dispatch('prepareRequest', {query : query})
+      this.$store.dispatch('prepareRequest', { query : query })
     },
 
     selectBook(index){
       this.selectedBook = index;
+    },
+
+    getGenre(id) {
+      if(this.genres){
+        const genre = this.genres.filter((genre)=>{
+          return genre.id == id
+        })
+        return genre[0].name
+      }
+      return null
     }
 
   },
@@ -126,6 +136,14 @@ export default {
           return this.$store.state.dataPages.data
         }
           return null;
+    },
+
+    genres()
+    {
+      if(this.store.state.genres) {
+        return this.$store.state.genres;
+      }
+      return null;
     },
 
     pagesData(){

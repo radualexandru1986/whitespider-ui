@@ -6,15 +6,8 @@
   </div>
   <div class="mb-3 w-100 text-start">
     <label  class="form-label text-start">Genre</label>
-    <select v-model="details.genre" class="form-select" aria-label="Default select example">
-      <option selected>Choose a genre</option>
-      <option value="fiction">Fiction</option>
-      <option value="memoir" >Memoir</option>
-      <option value="mystery">Mystery</option>
-      <option value="novel"  >Novel</option>
-      <option value="poetry" >Poetry</option>
-      <option value="review" >Review</option>
-
+    <select v-model="details.genre_id" class="form-select" aria-label="Default select example">
+      <option v-for="genre in genres" :value="genre.id" :key="genre.id">{{ genre.name }}</option>
     </select>
   </div>
   <div class="mb-3 w-100 text-start">
@@ -56,7 +49,7 @@ export default {
       details : {
         id: this.id,
         title : this.title,
-        genre : this.genre,
+        genre_id : this.genre.id,
         author : this.author,
         available:this.available
       }
@@ -65,13 +58,32 @@ export default {
   methods :{
     update(){
 
-      this.$store.dispatch('updateRequest', this.details)
+      this.$store.dispatch('updateRequest', this.details);
+      console.log(this.genre)
     },
     destroy() {
       const result = window.confirm('Are you sure you want to delete this book?');
       if(result){
-        this.$store.dispatch('deleteRequest', this.details)
+        this.$store.dispatch('deleteRequest', this.details);
       }
+    }
+  },
+  computed: {
+    getGenre(){
+      if(this.$store.state.genres){
+        const genre =  this.$store.state.genres.filter((genre)=>{
+               genre.id == this.genre_id
+        })
+        return genre[0]
+      }
+      return null
+    },
+
+    genres(){
+      if(this.$store.state.genres){
+        return this.$store.state.genres;
+      }
+      return null;
     }
   }
 }

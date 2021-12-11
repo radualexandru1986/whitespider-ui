@@ -11,6 +11,11 @@ import Library from './components/Library.vue'
 
 export default {
   name: 'App',
+  data(){
+    return {
+      defaultPath : process.env.VUE_APP_ROOT_API
+    }
+  },
   components: {
     Library
   },
@@ -18,9 +23,16 @@ export default {
 
   },
   beforeMount() {
-    window.axios.get('http://127.0.0.1:8000/api/books').then(response=>{
+    const url = `${this.defaultPath}/books`
+
+    window.axios.get(url).then(response=>{
       this.$store.commit('addPages', response.data)
         })
+
+    window.axios.get(`${this.defaultPath}/genres`).then(response=>{
+      this.$store.commit('addGenre', response.data)
+    })
+
   },
 }
 </script>

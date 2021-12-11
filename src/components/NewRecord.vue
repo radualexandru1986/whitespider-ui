@@ -20,16 +20,10 @@
               <input v-model="details.title" type="text" class="form-control">
             </div>
           <div class="mb-3 w-100 text-start">
-              <label  class="form-label text-start">Genre</label>
-            <select v-model="details.genre" class="form-select" aria-label="Default select example">
-              <option selected>Choose a genre</option>
-              <option value="fiction">Fiction</option>
-              <option value="memoir" >Memoir</option>
-              <option value="mystery">Mystery</option>
-              <option value="novel"  >Novel</option>
-              <option value="poetry" >Poetry</option>
-              <option value="review" >Review</option>
-
+              <label  class="form-label text-start">Genres</label>
+            <select v-model="details.genre_id" class="form-select" aria-label="Select an option">
+              <option selected :value="null">Select a genre for this book</option>
+              <option v-for="genre in genres" :key="genre.id" :value="genre.id">{{genre.name}}</option>
             </select>
             </div>
           <div class="mb-3 w-100 text-start">
@@ -56,21 +50,28 @@ export default {
       showModal:true,
       details : {
         title : '',
-        genre : '',
+        genre_id : null,
         author : ''
-      }
+      },
+      errors : []
     }
   },
 
   methods : {
-      storeBook() {
-        console.log(this.bookId)
-          this.$store.dispatch('storeRequest', this.details);
-      }
+       storeBook() {
+       this.$store.dispatch('storeRequest', this.details)
+      },
   },
   computed: {
      book(){
       return this.$store.state.dataPages.data[this.bookId]
+    },
+
+    genres(){
+       if(this.$store.state.genres){
+         return this.$store.state.genres;
+       }
+       return null;
     }
   }
 }
