@@ -59,7 +59,6 @@ export default {
     update(){
 
       this.$store.dispatch('updateRequest', this.details);
-      console.log(this.genre)
     },
     destroy() {
       const result = window.confirm('Are you sure you want to delete this book?');

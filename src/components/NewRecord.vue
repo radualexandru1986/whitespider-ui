@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Reset</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="resetFields()">Reset</button>
           <button type="button" class="btn btn-primary" @click="storeBook()" data-bs-toggle="modal" data-bs-target="#crud">Save Record</button>
         </div>
       </div>
@@ -58,9 +58,17 @@ export default {
   },
 
   methods : {
+
        storeBook() {
        this.$store.dispatch('storeRequest', this.details)
+         this.resetFields()
       },
+
+      resetFields(){
+        this.details.title = ''
+        this.details.genre_id=null
+        this.details.author = ''
+      }
   },
   computed: {
      book(){
